@@ -1,4 +1,5 @@
 package one.digitalinnovation.classes.xdatas;
+import java.time.Instant;
 import java.util.Date;
 
 
@@ -24,7 +25,9 @@ public class JavaUtilDate {
         a.equals(b); //compara se objetos são iguais
         a.getTime(); //retorna a data em milissegundos epoch
         a.setTime(10000L); //define uma data em milissegundos epoch
-        a.toInstant();
+
+        Instant instant = b.toInstant();
+        System.out.println(instant);
 
 
         /* DEPRECATED:
