@@ -9,7 +9,7 @@ public class ListExercicio {
 
     /*
     Ter 5 perguntas (s/n) em lista sobre crimes:
-
+    
     1- Telefonou pra vítima?
     2- Esteve no local do crime?
     3- Mora perto da vítima?
