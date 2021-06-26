@@ -10,10 +10,7 @@ package one.digitalinnovation.classes.z_collections;
 //Lembrar de sobrescrever hashcode e equals no caso de Hashs
 
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class SetOrdenando {
 
@@ -30,17 +27,22 @@ public class SetOrdenando {
         }
 
         System.out.println("Por ordem de iserção:");
-        Set<Serie> minhasSeries2 = new LinkedHashSet<>(){{
-            add(new Serie("Doctor Who","Scifi",45));
-            add(new Serie("Brooklyn 99","Comedia",20));
-            add(new Serie("Mandalorian","Scifi",60));
-        }};
+            Set<Serie> minhasSeries2 = new LinkedHashSet<>(){{
+                add(new Serie("Doctor Who","Scifi",45));
+                add(new Serie("Brooklyn 99","Comedia",20));
+                add(new Serie("Mandalorian","Scifi",60));
+            }};
+            for (Serie serie: minhasSeries2) System.out.println(serie.getNome() + " - "
+                +serie.getGenero()+" - "+serie.getTempoEpisodio());
 
+        System.out.println("Ordem natural (Tempo do Espisódio):");
+        Set<Serie> minhasSeries3 = new TreeSet<>(minhasSeries2);
+        System.out.println(minhasSeries3);
     }
 }
 
-
-class Serie {
+//Implements Comparable<Objeto> necessário para ordenação. Depois usando Overrides para mostrar como.
+class Serie implements Comparable<Serie> {
     private String nome;
     private String genero;
     private Integer tempoEpisodio;
@@ -95,5 +97,14 @@ class Serie {
     @Override
     public int hashCode() {
         return Objects.hash(nome, genero, tempoEpisodio);
+    }
+
+    @Override
+    public int compareTo(Serie serie) {
+        /*Necessário definir para cada objeto se não quiser perder o que está sendo comparado, pois o set elimina
+        elementos iguais durante a comparação */
+        int tempoEpisodio = Integer.compare(this.getTempoEpisodio(),serie.getTempoEpisodio());
+        if (tempoEpisodio != 0) return tempoEpisodio;
+        return this.genero.compareTo(serie.getGenero());
     }
 }
