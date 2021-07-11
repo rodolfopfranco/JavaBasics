@@ -32,21 +32,25 @@ public class MapExercicios {
     public static void main(String[] args) {
 
         EstadosNordeste estadosNordestinos = new EstadosNordeste();
-        System.out.println(estadosNordestinos.getEstadosPopulacao());
-        estadosNordestinos.SubstituiPopulacaoRN();
-        estadosNordestinos.ConfereExistenciaPB();
-        estadosNordestinos.ExibePopulacaoPE();
-        estadosNordestinos.ExibeEstadosNaOrdemInformada();
-        estadosNordestinos.ExibeAlfabeticamente();
+        estadosNordestinos.substituiPopulacaoRN();
+        estadosNordestinos.confereExistenciaPB();
+        estadosNordestinos.exibePopulacaoPE();
+        estadosNordestinos.exibeEstadosNaOrdemInformada();
+        estadosNordestinos.exibeAlfabeticamente();
+        estadosNordestinos.menorPopulacao();
+        estadosNordestinos.maiorPopulacao();
+        estadosNordestinos.mediaPopulacao();
+        estadosNordestinos.removeEstadosComPopulacaoAbaixoDe4M();
+        estadosNordestinos.apagaDicionario();
+
+        System.out.println("EXERCICIO 2:");
+        Dados dados = new Dados();
+        dados.contaCadaValor();
     }
 }
 
 class EstadosNordeste {
     private Map<String,Integer> estadosPopulacao;
-
-    public Map<String, Integer> getEstadosPopulacao() {
-        return estadosPopulacao;
-    }
 
     public EstadosNordeste() {
         //Criar dicionário com estado e população
@@ -60,24 +64,24 @@ class EstadosNordeste {
         };
     }
 
-    public void SubstituiPopulacaoRN(){
+    public void substituiPopulacaoRN(){
         //Substituir população do RN por 3534165
         estadosPopulacao.put("RN",3534165);
     }
 
-    public void ConfereExistenciaPB(){
+    public void confereExistenciaPB(){
         //Conferir se o estado PB está no dicionário. Se não estiver, adicionarPB 4039277
         if(!this.estadosPopulacao.containsKey("PB")){
             this.estadosPopulacao.put("PB",4039277);
         }
     }
 
-    public void ExibePopulacaoPE() {
+    public void exibePopulacaoPE() {
         //Exibir população de PE
         System.out.println("População de PE: "+this.estadosPopulacao.get("PE"));
     }
 
-    public void ExibeEstadosNaOrdemInformada() {
+    public void exibeEstadosNaOrdemInformada() {
         //Exibir todos os estados e todas suas populações na ordem informada
         Map<String,Integer> estadosOrdenados= new LinkedHashMap<>(){
             {
@@ -88,14 +92,64 @@ class EstadosNordeste {
                 put("RN", 3534265);
             }
         };
-        System.out.println(estadosOrdenados);
+        System.out.println("Ordem original: "+estadosOrdenados);
     }
 
-    public void ExibeAlfabeticamente(){
+    public void exibeAlfabeticamente(){
         //Exibir em ordem alfabetica
         Set<Map.Entry<String, Integer>> estadosAlfabeticamente = new TreeSet<>(new ComparatorEstado());
         estadosAlfabeticamente.addAll(this.estadosPopulacao.entrySet());
-        System.out.println(estadosAlfabeticamente);
+        System.out.println("Alfabeticamente: "+estadosAlfabeticamente);
+    }
+
+    public void menorPopulacao() {
+        //Exibir o estado com menor população + quantidade
+        Integer menor = Collections.min(this.estadosPopulacao.values());
+        String estado = "";
+        for (Map.Entry<String, Integer> entry : this.estadosPopulacao.entrySet()) {
+            if (entry.getValue().equals(menor)) {
+                estado = entry.getKey();
+            }
+        }
+        System.out.println("Estado com menor população: "+estado+" "+menor);
+    }
+
+    public void maiorPopulacao() {
+        //Exibir o estado com maior população + quantidade
+        Integer maior = Collections.max(this.estadosPopulacao.values());
+        String estado = "";
+        for (Map.Entry<String, Integer> entry : this.estadosPopulacao.entrySet()) {
+            if (entry.getValue().equals(maior)) {
+                estado = entry.getKey();
+            }
+        }
+        System.out.println("Estado com maior população: "+estado+" "+maior);
+    }
+
+    public void mediaPopulacao(){
+        //exibir a média da população
+        Double populacaoTotal = 0.0;
+        for (Integer populacao : this.estadosPopulacao.values()){
+            populacaoTotal += populacao;
+        }
+        Double mediaPopulacao = populacaoTotal / this.estadosPopulacao.size();
+        System.out.println("Média da população: "+mediaPopulacao);
+    }
+
+    public void removeEstadosComPopulacaoAbaixoDe4M(){
+        //Remover estados com população menor de 4000000
+        System.out.println("Estados antes da remoção: "+this.estadosPopulacao);
+        Iterator<Integer> iterador = this.estadosPopulacao.values().iterator();
+        while(iterador.hasNext()){
+            if(iterador.next()<4000000) iterador.remove();
+        }
+        System.out.println("Estados com mais de 4000000 após a remoção: "+this.estadosPopulacao);
+    }
+
+    public void apagaDicionario(){
+        //Apagar dicionário,Conferir se está vazio.
+        this.estadosPopulacao.clear();
+        System.out.println("Dicionário apagado? "+this.estadosPopulacao.isEmpty());
     }
 
     class ComparatorEstado implements Comparator<Map.Entry<String, Integer>> {
@@ -105,4 +159,30 @@ class EstadosNordeste {
         }
     }
 
+}
+
+class Dados{
+    private Map<String,Integer> numeros;
+
+    public Dados() {
+        this.numeros = new HashMap();
+        for (Integer i = 0; i < 100; i++){
+            Random atual = new Random();
+            this.numeros.put(String.valueOf(i), atual.nextInt(20));
+        }
+        System.out.println(numeros);
+    }
+
+    public void contaCadaValor(){
+        Map<String,Integer> numeroSemRepetidos = new HashMap();
+        Set<Map.Entry<String,Integer>> entries = this.numeros.entrySet();
+        for (Map.Entry<String, Integer> entry: entries) {
+            if (!numeroSemRepetidos.containsValue(entry.getValue())) {
+                numeroSemRepetidos.put(entry.getKey(), entry.getValue());
+            }
+        }
+        for (Integer numeroContado : numeroSemRepetidos.values()){
+            System.out.println("O número "+numeroContado+" aparece "+Collections.frequency(this.numeros.values(),numeroContado)+" vezes.");
+        }
+    }
 }
